@@ -1,0 +1,35 @@
+#include<iostream>
+#include<stdio.h>
+#include<string.h>
+#include <algorithm>
+using namespace std;
+const int N=100008;
+int a[N][12], d[N][12];
+int max1(int a, int b, int c) {
+	return max(max(a, b), max(b, c));
+}
+int main() {
+	int n;
+	while (scanf("%d", &n) != EOF && n) {
+		memset(a, 0, sizeof(a));
+		memset(d, 0, sizeof(d));
+		int m = 0, maxT = 0;
+		int x, t;
+		while (n--) {
+			scanf("%d%d", &x, &t);
+			a[t][x]++;
+			maxT = max(maxT, t);
+		}
+		d[1][4] = a[1][4];
+		d[1][5] = a[1][5];
+		d[1][6] = a[1][6];
+		for (int i = 2; i <= maxT; i++) {
+			for (int j = 0; j <= 10; j++) {
+				d[i][j] = max1(d[i - 1][j - 1], d[i - 1][j], d[i - 1][j + 1]) + a[i][j];
+				m = max(m, d[i][j]);
+			}
+		}
+		printf("%d\n", m);
+	}
+	return 0;
+}
